@@ -1,0 +1,24 @@
+{
+  "articles": [
+    {
+      "title": "Mundial de dardos 2026",
+      "summary": "Una corta opinión sobre la participación ibérica en el mundial.",
+      "image": "articles/imagen 1.jpg",
+      "docx": "articles/Entrevista 1.docx"
+    }
+  ],
+    "rutinas": [
+    {
+      "title": "The Salva Routine",
+      "summary": "La rutina del gran Salva",
+      "image": "articles/imagen2.jpg",
+      "docx": ""
+    },
+    {
+      "title": "The Cammy Routine",
+      "summary": "La rutina de Cameron Menzies",
+      "image": "articles/imagen3.jpg",
+      "docx": ""
+    }
+  ]
+}

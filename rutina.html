@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InfoDarts - Rutina</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <aside id="sidebar" class="sidebar" aria-hidden="true">
+    <h2>InfoDarts</h2>
+    <ul>
+      <li><a href="index.html#calendario">Calendario</a></li>
+      <li><a href="index.html#entrevistas">Entrevistas</a></li>
+      <li><a href="index.html#rutinas">Rutinas de Entrenamiento</a></li>
+      <li><a href="index.html#contacto">Contacto</a></li>
+    </ul>
+  </aside>
+
+  <div class="main-content">
+    <header class="header">
+      <h1>InfoDarts</h1>
+      <h2 class="subtitle">Rutina de Entrenamiento</h2>
+      <button id="menuToggle" class="hamburger" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+    </header>
+
+    <section id="rutina" class="section">
+      <div class="article-container" style="max-width:900px;margin:20px auto;">
+        <h2 id="rutina-title">Cargando...</h2>
+        <img id="rutina-image" src="" alt="Rutina" style="max-width:100%;border-radius:8px;margin:10px 0;display:none;">
+        <p id="rutina-error" style="display:none;">No se pudo cargar la rutina.</p>
+      </div>
+      <div style="text-align:center;margin-top:20px;display:flex;justify-content:center;gap:12px;">
+        <a href="index.html#calendario" class="btn">🏠 Inicio</a>
+        <a href="index.html#rutinas" class="btn">← Rutinas</a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <a href="https://www.instagram.com/9inedarter" target="_blank">Instagram</a> |
+      <a href="https://x.com/9inedarter" target="_blank">X</a> |
+      <a href="https://ko-fi.com/9inedarter" target="_blank">Donar</a> |
+      <a href="mailto:9inedarter@gmail.com">Contacto</a>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // setupMenu(); already handled in script.js
+      const params = new URLSearchParams(window.location.search);
+      const title = params.get('title');
+      const image = params.get('image');
+
+      const titleElement = document.getElementById('rutina-title');
+      const imageElement = document.getElementById('rutina-image');
+      const errorElement = document.getElementById('rutina-error');
+
+      if (title && image) {
+        titleElement.textContent = decodeURIComponent(title);
+        imageElement.src = image;
+        imageElement.alt = decodeURIComponent(title);
+        imageElement.style.display = 'block';
+      } else {
+        titleElement.textContent = 'Error';
+        errorElement.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>

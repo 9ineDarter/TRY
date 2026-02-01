@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InfoDarts - Artículo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <meta property="og:title" content="InfoDarts — Artículo">
+</head>
+<body>
+  <aside id="sidebar" class="sidebar" aria-hidden="true">
+    <h2>InfoDarts</h2>
+    <ul>
+      <li><a href="index.html#calendario">Calendario</a></li>
+      <li><a href="index.html#entrevistas">Entrevistas</a></li>
+      <li><a href="index.html#rutinas">Rutinas de Entrenamiento</a></li>
+      <li><a href="index.html#contacto">Contacto</a></li>
+    </ul>
+  </aside>
+
+  <div class="main-content">
+    <header class="header">
+      <h1>InfoDarts</h1>
+      <h2 class="subtitle">Artículo</h2>
+      <button id="menuToggle" class="hamburger" aria-label="Toggle Menu" aria-expanded="false">☰</button>
+    </header>
+
+    <section id="articulo" class="section">
+      <div class="article-container" style="max-width:900px;margin:20px auto;">
+        <h2 id="article-title">Cargando...</h2>
+        <div id="article-content">Cargando contenido...</div>
+      </div>
+      <div style="text-align:center;margin-top:20px;display:flex;justify-content:center;gap:12px;">
+        <a href="index.html#calendario" class="btn">🏠 Inicio</a>
+        <a href="index.html#entrevistas" class="btn">← Artículos</a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <a href="https://www.instagram.com/9inedarter" target="_blank">Instagram</a> |
+      <a href="https://x.com/9inedarter" target="_blank">X</a> |
+      <a href="https://ko-fi.com/9inedarter" target="_blank">Donar</a> |
+      <a href="mailto:9inedarter@gmail.com">Contacto</a>
+    </footer>
+  </div>
+
+  <script src="https://unpkg.com/mammoth@1.8.0/mammoth.browser.min.js"></script>
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // setupMenu is invoked inside script.js's DOMContentLoaded
+
+      const params = new URLSearchParams(window.location.search);
+      const docxPath = params.get('docx');
+      const title = params.get('title');
+
+      if (docxPath && title) {
+        document.getElementById('article-title').textContent = decodeURIComponent(title);
+        fetch(docxPath)
+          .then(response => {
+            if (!response.ok) throw new Error('No se pudo cargar el archivo DOCX');
+            return response.arrayBuffer();
+          })
+          .then(buffer => mammoth.convertToHtml({ arrayBuffer: buffer }))
+          .then(result => {
+            document.getElementById('article-content').innerHTML = result.value;
+          })
+          .catch(error => {
+            console.error('Error cargando el artículo:', error);
+            document.getElementById('article-content').innerHTML = '<p>Error al cargar el artículo.</p>';
+          });
+      } else {
+        document.getElementById('article-content').innerHTML = '<p>No se especificó ningún artículo.</p>';
+      }
+    });
+  </script>
+</body>
+</html>

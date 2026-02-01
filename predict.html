@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PDC Mediterranean Qualifier – Predicciones</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-card:#fdfdfd;
+  --red:#c0392b;
+  --red-light:#e74c3c;
+  --yellow:#f1c40f;
+  --text:#222;
+  --muted:#888;
+}
+body{
+  font-family:'Montserrat',sans-serif;
+  background: radial-gradient(circle at center, #1a1a1a 60%, #000000 100%);
+  color:#fdfdfd; margin:0; padding:0; text-align:center;
+}
+header{ padding:24px 12px; }
+h1{
+  font-family:'Pacifico',cursive; font-size:2.4em; margin:0 0 6px;
+  color:var(--yellow); text-shadow: 2px 2px var(--red);
+}
+.sub{ color:#ddd; font-weight:500; margin-bottom: 16px; }
+.container{ max-width:1100px; margin:0 auto; padding: 0 16px 24px; }
+.toolbar{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:16px; }
+.button{
+  background:var(--yellow); color:#000; border:none; border-radius:8px;
+  padding:10px 16px; font-weight:600; cursor:pointer; transition:.2s;
+}
+.button:hover{ background:var(--red); color:#fff; }
+.secondary{ background:#2b2b2b; color:#fff; }
+.secondary:hover{ background:#4a4a4a; }
+
+.progress-wrap{ display:flex; align-items:center; gap:10px; justify-content:center; margin:10px 0 20px; }
+.progress{ width:320px; height:12px; background:#2b2b2b; border-radius:999px; overflow:hidden; }
+.progress > div{ height:100%; width:0%; background:linear-gradient(90deg, var(--red), var(--yellow)); transition:width .4s ease; }
+.progress-text{ color:#ddd; font-size:.95em; }
+
+/* Tabla */
+.card{ background:var(--bg-card); color:var(--text); border-radius:14px; box-shadow:0 6px 16px rgba(0,0,0,.45); padding:14px; }
+.table{ width:100%; border-collapse:separate; border-spacing:0 10px; }
+.table thead th{ background: #fff3ce; color:#000; font-weight:700; padding:12px; border-top-left-radius:10px; border-top-right-radius:10px; text-transform:uppercase; }
+.table tbody td{ background:#fff; padding:12px; border-radius:10px; vertical-align:middle; box-shadow:0 2px 8px rgba(0,0,0,.15); }
+.table .section-title{ font-weight:700; color:#000; }
+.table .stat{ display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap; }
+.stat .value{ font-weight:600; color:#111; }
+.stat .note{ color:var(--muted); font-size:.9em; }
+
+/* separación cada 4 filas */
+.table tbody tr:nth-child(4n) td{ border-bottom:3px solid var(--yellow); }
+
+/* Botón seleccionar */
+.select-btn{
+  background:var(--red); color:#fff; border:none; border-radius:8px;
+  padding:8px 12px; font-weight:600; cursor:pointer; transition:.2s;
+}
+.select-btn:hover{ background:var(--yellow); color:#000; }
+
+/* Modal */
+.modal-backdrop{ position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; align-items:center; justify-content:center; z-index:1000; }
+.modal{ background:#fff; color:#111; border-radius:14px; width:min(560px, 94vw); box-shadow:0 8px 28px rgba(0,0,0,.6); padding:16px; position:relative; }
+.modal h3{ margin:6px 0 8px; font-size:1.2em; font-weight:700; color:#111; }
+.modal .row{ display:flex; gap:10px; flex-wrap:wrap; margin:8px 0; }
+.modal select, .modal input, .modal textarea{ flex:1; min-width:160px; padding:10px; border:1px solid #ddd; border-radius:10px; font-family:'Montserrat',sans-serif; }
+.modal textarea{ min-height:88px; }
+.modal-actions{ margin-top:12px; display:flex; gap:10px; justify-content:flex-end; }
+.close-x{ position:absolute; right:10px; top:8px; background:transparent; border:none; font-size:20px; cursor:pointer; color:#333; }
+
+/* Popup captura */
+#popup{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.7); z-index: 1100; align-items:center; justify-content:center; }
+.popup-card{ width:min(900px, 96vw); background:#fff; color:#111; border-radius:14px; padding:16px; box-shadow:0 10px 32px rgba(0,0,0,.7); }
+.popup-card h2{ font-family:'Pacifico',cursive; color:var(--red); margin:8px 0 12px; }
+.popup-actions{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:10px; }
+.popup-actions a, .popup-actions button{ background:var(--red); color:#fff; border:none; border-radius:10px; padding:10px 16px; font-weight:600; text-decoration:none; cursor:pointer; }
+.popup-actions a:hover, .popup-actions button:hover{ background:var(--yellow); color:#000; }
+#bracketImage{ width:100%; border-radius:12px; }
+.section-badge{ display:inline-block; background:var(--yellow); color:#000; padding:4px 8px; border-radius:999px; font-weight:700; font-size:.85em; }
+
+/* Confeti simple */
+.confetti{ position:fixed; z-index:1200; pointer-events:none; inset:0; }
+.confetti span{ position:absolute; width:10px; height:10px; background: var(--yellow); animation: fall 2.4s linear forwards; }
+.confetti span.red{ background: var(--red); }
+@keyframes fall{ 0%{ transform: translateY(-20vh) rotate(0deg); opacity:1; } 100%{ transform: translateY(110vh) rotate(360deg); opacity:.2; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>#PDCMediterraneanQualifier</h1>
+  <div class="sub">Haz tus predicciones del clasificatorio: elige jugadores y añade notas. Pulsa Guardar para compartir tu imagen.</div>
+  <div class="toolbar">
+    <button id="guardar" class="button">Guardar</button>
+    <button id="reset" class="button secondary">Reiniciar</button>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress"><div id="progressBar"></div></div>
+    <div id="progressText" class="progress-text">0% completado</div>
+  </div>
+</header>
+
+<main class="container">
+  <div id="predictCard" class="card">
+    <table class="table" id="predTable">
+      <thead>
+        <tr>
+          <th>Sección</th>
+          <th>Predicción</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+</main>
+
+<!-- Modal selección -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal" role="dialog" aria-modal="true">
+    <button class="close-x" id="closeModal" aria-label="Cerrar">✕</button>
+    <h3 id="modalTitle">Selecciona tu predicción</h3>
+    <div class="row">
+      <select id="playerSelect"></select>
+      <input id="customInput" type="text" placeholder="Dato extra (ej: 170, 12 máximos, etc.)"/>
+    </div>
+    <div class="row">
+      <textarea id="noteInput" placeholder="Notas o comentarios (opcional)"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="button secondary" id="cancelModal">Cancelar</button>
+      <button class="button" id="saveModal">Guardar selección</button>
+    </div>
+  </div>
+</div>
+
+<!-- Popup captura -->
+<div id="popup">
+  <div class="popup-card">
+    <h2>#PDCMediterraneanQualifier</h2>
+    <img id="bracketImage" src="" alt="Predicciones"/>
+    <p style="font-family:'Pacifico',cursive;color:#e67e22;margin:8px 0;">@9ine_darter on ig</p>
+    <div class="popup-actions">
+      <a id="downloadLink" download="predicciones.png">Descargar imagen</a>
+      <a id="twitterLink" target="_blank">Publicar en X</a>
+      <a id="instagramLink" target="_blank">Publicar en Instagram</a>
+      <button id="closePopup">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confeti -->
+<div id="confetti" class="confetti" aria-hidden="true"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script>
+// Lista de jugadores (70)
+// Reemplaza esta lista por los nombres que quieras (añade/quita/edita)
+const jugadores = [
+  "David Ruiz Bautista",
+  "Javier Moreno Barroso",
+  "Salva Cabrera",
+  "Carlos Rodriguez",
+  "Antonio Alcinas",
+  "Jesus Noguera",
+  "Angel Martin Sanchez",
+  "Jorge Garcia Del Pozo",
+  "David Guzman",
+  "Alberto Herraez Garcia",
+  "Álvaro Sánchez Calles",
+  "Borja Caballero",
+  "Hugo Panyté",
+  "Fernando Luis Sanchez",
+  "Sergio Garcia González",
+  "Jaime Nuñez Cortes",
+  "Aitor Hernán Torre",
+  "Los Mafiosos",
+  "Daniel Sanchez Pantoja",
+  "Serapio Diaz Moreno Parraga",
+  "Jose Rodríguez",
+  "Juan Carlos Belmez",
+  "Jose Luis Bordoy Prohens",
+  "Juan Francisco Rodriguez Bernabe",
+  "Guillermo Llado Rigo",
+  "Jesus Martinez Lopez",
+  "Ruben Cañas",
+  "Israel Priego",
+  "Juan Jose Acs",
+  "Zapa",
+  "Carlos Alted",
+  "Eduardo Redondo Calle",
+  "Hugo Leonardo",
+  "Julio Barbero Gonzalez",
+  "Sergio Tabernilla",
+  "Jesus Javier Riestra",
+  "David Miguell Ruivo Gomes",
+  "Clemente Molina Verdu",
+  "Alejandro Vizner Carratala",
+  "Diego Rufo Martinez Martinez",
+  "Julien Berenguer",
+  "Ismael Fernandez Romero",
+  "Juan Gutierrez",
+  "Julio Montealegre",
+  "Jeremy Clavier",
+  "Lylian Le Calvez",
+  "Ludovic Le Mat",
+  "Jose Antonio Justicia",
+  "Angel De Castro",
+  "Jose Luis Godoy",
+  "Luis Filipe Dos Santos Camacho",
+  "Luis Rojas",
+  "Cristo Reyes Torres",
+  "Javier Hibernon Cano",
+  "Oscar Marugan",
+  "Daniel Delgado",
+  "Michele Turetta",
+  "Damian Santos",
+  "Aitor Rodriguez Parada",
+  "Juan Calvo Rivera",
+  "Victor Manuel Otero",
+  "Ion Alkorta",
+  "Francisco Ruiz Cerrillo",
+  "Martin Marti Santamaria",
+  "Ricardo Fernandez Carballo",
+  "Andres Romeral Arregui",
+  "Ricardo Perez Ibarra",
+  "Joan Gil Mestres",
+  "Abraham Beltran"
+  "Ángel Herrero"
+];
+  // añade más nombres aquí, por ejemplo hasta 70 si lo deseas
+
+// Categorías finales
+const categorias = [
+  {key:'mundial', label:'Clasificado al mundial', badge:'Clasificación'},
+  {key:'finalista', label:'Finalista', badge:'Final'},
+  {key:'checkout', label:'El checkout más alto', badge:'Checkout'},
+  {key:'max180s', label:'Jugador con más 180s', badge:'Máximos'},
+  {key:'mejorProm', label:'Mejor promedio de partida', badge:'Promedio'},
+  {key:'clutch', label:'Jugador más clutch (dobles bajo presión)', badge:'Clutch'},
+  {key:'bestDoubles', label:'Mejor porcentaje en dobles', badge:'Dobles %'},
+  {key:'most140s', label:'Jugador con más 140+', badge:'140+'},
+  {key:'quieroGane', label:'Quién quieres que gane', badge:'Ganador deseado'}
+];
+
+const selections = {}; // {key: {player, custom, note}}
+let currentKey = null;
+
+// Render tabla
+const tableBody = document.getElementById('tableBody');
+function renderTable(){
+  tableBody.innerHTML = '';
+  categorias.forEach((cat)=>{
+    const tr = document.createElement('tr');
+
+    const td1 = document.createElement('td');
+    td1.innerHTML = `<span class="section-badge">${cat.badge}</span> <span class="section-title">${cat.label}</span>`;
+
+    const td2 = document.createElement('td');
+    const sel = selections[cat.key];
+    const valueText = sel ? `<span class="value">${sel.player || '(sin jugador)'}${sel.custom ? ' — '+sel.custom : ''}</span>` : `<span class="value" style="color:#999">Sin selección</span>`;
+    const noteText = sel && sel.note ? `<div class="note">${sel.note}</div>` : '';
+    td2.innerHTML = `<div class="stat">${valueText}${noteText}</div>`;
+
+    const td3 = document.createElement('td');
+    const btn = document.createElement('button');
+    btn.className = 'select-btn';
+    btn.textContent = sel ? 'Editar' : 'Seleccionar';
+    btn.onclick = ()=> openModal(cat.key, cat.label);
+    td3.appendChild(btn);
+
+    tr.appendChild(td1); tr.appendChild(td2); tr.appendChild(td3);
+    tableBody.appendChild(tr);
+  });
+  updateProgress();
+}
+renderTable();
+
+// Modal
+const modalBackdrop = document.getElementById('modalBackdrop');
+const playerSelect = document.getElementById('playerSelect');
+const customInput = document.getElementById('customInput');
+const noteInput = document.getElementById('noteInput');
+const modalTitle = document.getElementById('modalTitle');
+
+function openModal(key, label){
+  currentKey = key;
+  modalTitle.textContent = `Selecciona: ${label}`;
+  // Rellenar select
+  playerSelect.innerHTML = '';
+  jugadores.forEach(j=>{
+    const opt = document.createElement('option');
+    opt.value = j; opt.textContent = j;
+    playerSelect.appendChild(opt);
+  });
+  // precargar si existe
+  const existing = selections[key] || {};
+  if(existing.player){ playerSelect.value = existing.player; }
+  customInput.value = existing.custom || '';
+  noteInput.value = existing.note || '';
+  modalBackdrop.style.display = 'flex';
+}
+function closeModal(){
+  modalBackdrop.style.display = 'none';
+  currentKey = null;
+}
+document.getElementById('closeModal').onclick = closeModal;
+document.getElementById('cancelModal').onclick = closeModal;
+document.getElementById('saveModal').onclick = ()=>{
+  if(!currentKey) return;
+  selections[currentKey] = {
+    player: playerSelect.value,
+    custom: customInput.value.trim(),
+    note: noteInput.value.trim()
+  };
+  closeModal();
+  renderTable();
+};
+
+// Progreso
+function updateProgress(){
+  const total = categorias.length;
+  const done = Object.values(selections).filter(s=>s && s.player).length;
+  const pct = Math.round((done/total)*100);
+  document.getElementById('progressBar').style.width = `${pct}%`;
+  document.getElementById('progressText').textContent = `${pct}% completado`;
+  if(pct === 100){ launchConfetti(); }
+}
+
+// Confeti simple
+function launchConfetti(){
+  const conf = document.getElementById('confetti');
+  conf.innerHTML = '';
+  for(let i=0;i<80;i++){
+    const s = document.createElement('span');
+    s.style.left = Math.random()*100+'vw';
+    s.style.top = '-10vh';
+    if(i%2===0) s.classList.add('red');
+    s.style.animationDelay = (Math.random()*0.8)+'s';
+    conf.appendChild(s);
+  }
+  setTimeout(()=>{ conf.innerHTML=''; }, 3000);
+}
+
+// Guardar (captura + pop-up + X intent)
+document.getElementById('guardar').onclick = ()=>{
+  const card = document.getElementById('predictCard');
+  html2canvas(card, {backgroundColor: "#1a1a1a", scale: 2}).then(canvas=>{
+    const imgData = canvas.toDataURL("image/png");
+    document.getElementById('bracketImage').src = imgData;
+    document.getElementById('downloadLink').href = imgData;
+    document.getElementById('popup').style.display = 'flex';
+    // Intent de X (Twitter) con texto personalizado
+    document.getElementById('twitterLink').href =
+      "https://twitter.com/intent/tweet?text=%23PDCMediterraneanQualifer%20Esta%20es%20mi%20predicci%C3%B3n";
+    document.getElementById('instagramLink').href = "https://www.instagram.com/";
+  });
+};
+
+// Resetear
+document.getElementById('reset').onclick = ()=>{
+  Object.keys(selections).forEach(k=> delete selections[k]);
+  renderTable();
+};
+
+// Cerrar popup
+document.getElementById('closePopup').onclick = ()=>{
+  document.getElementById('popup').style.display = 'none';
+};
+
+// Accesibilidad: cerrar modal/popup con ESC y clic fuera
+window.addEventListener('keydown', (e)=>{
+  if(e.key==='Escape'){
+    closeModal();
+    document.getElementById('popup').style.display = 'none';
+  }
+});
+modalBackdrop.addEventListener('click',(e)=>{
+  if(e.target===modalBackdrop) closeModal();
+});
+document.getElementById('popup').addEventListener('click',(e)=>{
+  if(e.target.id==='popup') document.getElementById('popup').style.display='none';
+});
+</script>
+</body>
+
+</html>

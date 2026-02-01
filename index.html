@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InfoDarts | Noticias y calendario de dardos</title>
+  <meta name="description" content="InfoDarts — noticias, calendario y rutinas de dardos en español">
+  <!-- Google Fonts for Opción 4 -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Open Graph -->
+  <meta property="og:title" content="InfoDarts — Noticias y calendarios de dardos">
+  <meta property="og:description" content="Todas las noticias, calendario, rutinas y ranking de dardos en español.">
+  <meta property="og:image" content="/og-image.png">
+  <meta property="og:url" content="https://infodarts.vercel.app/">
+  <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+
+  <aside id="sidebar" class="sidebar" aria-hidden="true">
+    <h2>InfoDarts</h2>
+    <ul>
+      <li><a href="#calendario">Calendario</a></li>
+      <li><a href="#actualidad">Actualidad</a></li>
+      <li><a href="predict.html">Predicciones</a></li>
+      <li><a href="#rutinas">Rutinas de Entrenamiento</a></li>
+      <li><a href="#ranking">Ranking PDC</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </aside>
+
+  <div class="main-content">
+    <header class="header">
+      <div class="brand">
+        <h1>InfoDarts</h1>
+        <p class="subtitle">La casa de los dardos en español</p>
+      </div>
+      <button id="menuToggle" class="hamburger" aria-expanded="false" aria-controls="sidebar">☰</button>
+    </header>
+
+    <main>
+      <section id="calendario" class="section">
+        <div class="month-nav">
+          <button id="prevMonth">&lt;</button>
+          <span id="monthYear"></span>
+          <button id="nextMonth">&gt;</button>
+        </div>
+        <div class="dow-grid">
+          <div>L</div><div>M</div><div>X</div><div>J</div><div>V</div><div>S</div><div>D</div>
+        </div>
+        <div id="calendarGrid" class="calendar-grid"></div>
+      </section>
+
+      <section id="actualidad" class="section hidden">
+        <h2>Actualidad</h2>
+        <div id="articles-list" class="articles-list"></div>
+        <div class="ad-slot ad-inline" data-ad-slot="INLINE_1"></div>
+      </section>
+
+      <section id="rutinas" class="section hidden">
+        <h2>Rutinas de entrenamiento</h2>
+        <div id="rutinas-list"></div>
+      </section>
+
+      <section id="ranking" class="section hidden">
+        <h2>Ranking PDC</h2>
+        <div id="ranking-list"></div>
+      </section>
+
+      <section id="contacto" class="section hidden">
+        <h2>Envíanos tus torneos</h2>
+        <div class="contact-banner article-container">
+          <p>Si quieres que añadamos tu torneo, envíanos un email con los datos.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <a href="https://www.instagram.com/9inedarter" target="_blank">Instagram</a> |
+      <a href="https://x.com/9inedarter" target="_blank">X</a> |
+      <a href="https://ko-fi.com/9inedarter" target="_blank">Donar</a> |
+      <a href="mailto:9inedarter@gmail.com">Contacto</a>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
